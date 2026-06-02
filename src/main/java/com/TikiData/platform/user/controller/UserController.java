@@ -1,9 +1,6 @@
 package com.TikiData.platform.user.controller;
 
-import com.TikiData.platform.user.dto.AdminCreateUserDTO;
-import com.TikiData.platform.user.dto.AdminUpdateUserDTO;
-import com.TikiData.platform.user.dto.UserRequestDTO;
-import com.TikiData.platform.user.dto.UserResponseDTO;
+import com.TikiData.platform.user.dto.*;
 import com.TikiData.platform.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +54,24 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/profile/{email}")
+    public ResponseEntity<UserResponseDTO> getMyProfile(@PathVariable String email) {
+        UserResponseDTO response = userService.getOwnProfile(email);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/profile/{email}")
+    public ResponseEntity<UserResponseDTO> updateMyAccount(@PathVariable String email, @Valid @RequestBody UserUpdateOwnDTO dto) {
+        UserResponseDTO response = userService.updateOwnAccount(email, dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/profile/{email}")
+    public ResponseEntity<Void> deleteMyAccount(@PathVariable String email) {
+        userService.deleteOwnAccount(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

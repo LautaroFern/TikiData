@@ -1,9 +1,6 @@
 package com.TikiData.platform.user.service;
 
-import com.TikiData.platform.user.dto.AdminCreateUserDTO;
-import com.TikiData.platform.user.dto.AdminUpdateUserDTO;
-import com.TikiData.platform.user.dto.UserRequestDTO;
-import com.TikiData.platform.user.dto.UserResponseDTO;
+import com.TikiData.platform.user.dto.*;
 import com.TikiData.platform.user.mapper.UserMapper;
 import com.TikiData.platform.user.model.Role;
 import com.TikiData.platform.user.model.UserModel;
@@ -86,4 +83,36 @@ public class UserService implements IUserService{
         }
         repository.deleteById(id);
     }
+
+    @Override
+    public UserResponseDTO getOwnProfile(String currentEmail) {
+        UserModel user = repository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        return mapper.toResponseDTO(user);
+    }
+
+    @Override
+    public UserResponseDTO updateOwnAccount(String currentEmail, UserUpdateOwnDTO dto) {
+        UserModel user = repository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (!user.getEmail().equals(dto.getEmail()) && repository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("El email ya está en uso");
+        }
+
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+
+        UserModel updatedUser = repository.save(user);
+        return mapper.toResponseDTO(updatedUser);
+    }
+
+    @Override
+    public void deleteOwnAccount(String currentEmail) {
+        UserModel user = repository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        repository.delete(user);
+    }
+
+
 }
