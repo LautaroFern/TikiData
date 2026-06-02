@@ -1,4 +1,4 @@
-package com.TikiData.platform.user.model;
+package com.TikiData.platform.User.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,12 +1,12 @@
-package com.TikiData.platform.user.service;
+package com.TikiData.platform.User.Service;
 
-import com.TikiData.platform.user.dto.AdminCreateUserDTO;
-import com.TikiData.platform.user.dto.UserRequestDTO;
-import com.TikiData.platform.user.dto.UserResponseDTO;
-import com.TikiData.platform.user.mapper.UserMapper;
-import com.TikiData.platform.user.model.Role;
-import com.TikiData.platform.user.model.UserModel;
-import com.TikiData.platform.user.repository.UserRepository;
+import com.TikiData.platform.User.DTO.AdminCreateUserDTO;
+import com.TikiData.platform.User.DTO.UserRequestDTO;
+import com.TikiData.platform.User.DTO.UserResponseDTO;
+import com.TikiData.platform.User.Mapper.UserMapper;
+import com.TikiData.platform.User.Model.Role;
+import com.TikiData.platform.User.Model.UserModel;
+import com.TikiData.platform.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

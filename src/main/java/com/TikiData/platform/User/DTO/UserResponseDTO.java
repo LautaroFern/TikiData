@@ -1,4 +1,4 @@
-package com.TikiData.platform.user.dto;
+package com.TikiData.platform.User.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

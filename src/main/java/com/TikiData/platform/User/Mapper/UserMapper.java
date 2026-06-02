@@ -1,9 +1,9 @@
-package com.TikiData.platform.user.mapper;
+package com.TikiData.platform.User.Mapper;
 
-import com.TikiData.platform.user.dto.UserRequestDTO;
-import com.TikiData.platform.user.dto.UserResponseDTO;
-import com.TikiData.platform.user.model.Role;
-import com.TikiData.platform.user.model.UserModel;
+import com.TikiData.platform.User.DTO.UserRequestDTO;
+import com.TikiData.platform.User.DTO.UserResponseDTO;
+import com.TikiData.platform.User.Model.Role;
+import com.TikiData.platform.User.Model.UserModel;
 import org.springframework.stereotype.Component;
 
 @Component
