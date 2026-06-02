@@ -1,6 +1,6 @@
-package com.TikiData.platform.user.service;
+package com.TikiData.platform.User.Service;
 
-import com.TikiData.platform.user.dto.*;
+import com.TikiData.platform.User.DTO.*;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.TikiData.platform.user.model;
+package com.TikiData.platform.User.Model;
 
 public enum Role {
     USER,

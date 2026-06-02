@@ -1,7 +1,7 @@
-package com.TikiData.platform.user.controller;
+package com.TikiData.platform.User.Controller;
 
-import com.TikiData.platform.user.dto.*;
-import com.TikiData.platform.user.service.UserService;
+import com.TikiData.platform.User.DTO.*;
+import com.TikiData.platform.User.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
