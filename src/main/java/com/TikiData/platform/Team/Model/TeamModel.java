@@ -42,6 +42,6 @@ public class TeamModel {
     //Hay que armar el championship para vincularlo
     //private ChampionshipModel championship;
 
-    @OneToMany
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlayerModel> players;
 }

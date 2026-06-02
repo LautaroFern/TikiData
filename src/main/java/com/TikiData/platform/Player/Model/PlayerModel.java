@@ -27,16 +27,14 @@ public class PlayerModel {
     private Integer number;
 
     @Column(nullable = false)
-    private Integer age;
-
-    @Column(nullable = false)
     private LocalDate bornDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String position;
+    private Position position;
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", nullable = true)
     private TeamModel team;
 
 }
