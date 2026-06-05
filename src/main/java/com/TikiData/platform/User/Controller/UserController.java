@@ -74,4 +74,14 @@ public class UserController {
         userService.deleteOwnAccount(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/filter")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserResponseDTO>> filterUsers(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String role) {
+
+        List<UserResponseDTO> response = userService.filterUsers(email, role);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

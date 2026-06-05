@@ -16,4 +16,5 @@ public interface IUserService {
     UserResponseDTO getOwnProfile(String currentEmail);
     UserResponseDTO updateOwnAccount(String currentEmail, UserUpdateOwnDTO dto);
     void deleteOwnAccount(String currentEmail);
+    List<UserResponseDTO> filterUsers(String email, String role);
 }

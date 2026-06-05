@@ -114,5 +114,20 @@ public class UserService implements IUserService{
         repository.delete(user);
     }
 
+    @Override
+    public List<UserResponseDTO> filterUsers(String email, String role) {
+        Role roleEnum = null;
+        if (role != null && !role.isEmpty()) {
+            try {
+                roleEnum = Role.valueOf(role.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Rol no válido para filtrar");
+            }
+        }
 
+        return repository.searchUsersByFilters(email, roleEnum)
+                .stream()
+                .map(mapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 }
