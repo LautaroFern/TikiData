@@ -32,4 +32,7 @@ public class TeamRequestDTO {
     @NotBlank(message = "El nombre del presidente es obligatorio")
     @Size(min = 2, max = 100, message = "El nombre del presidente debe tener entre 2 y 100 caracteres")
     private String president;
+
+    @NotNull(message = "El ID del campeonato es obligatorio")
+    private Long championshipId;
 }

@@ -1,5 +1,6 @@
 package com.TikiData.platform.Team.Model;
 
+import com.TikiData.platform.Championship.Model.Championship;
 import com.TikiData.platform.Player.Model.PlayerModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,8 +40,9 @@ public class TeamModel {
     @Column(nullable = false)
     private String president;
 
-    //Hay que armar el championship para vincularlo
-    //private ChampionshipModel championship;
+    @ManyToOne
+    @JoinColumn(name = "championship_id")
+    private Championship championship;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlayerModel> players;

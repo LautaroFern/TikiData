@@ -1,4 +1,10 @@
 package com.TikiData.platform.Championship.Repository;
 
-public interface ChampionshipRepository {
+import com.TikiData.platform.Championship.Model.Championship;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ChampionshipRepository extends JpaRepository<Championship, Long> {
+    Championship findByChampionshipName(String name);
 }

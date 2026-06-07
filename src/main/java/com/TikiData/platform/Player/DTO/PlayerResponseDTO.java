@@ -3,12 +3,12 @@ package com.TikiData.platform.Player.DTO;
 import com.TikiData.platform.Player.Model.Position;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Period;
 
 @Data
-@Builder
 public class PlayerResponseDTO {
     private Long id;
     private String name;

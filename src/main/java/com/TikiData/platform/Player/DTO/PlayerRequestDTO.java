@@ -2,9 +2,11 @@ package com.TikiData.platform.Player.DTO;
 
 import com.TikiData.platform.Player.Model.Position;
 import jakarta.validation.constraints.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 public class PlayerRequestDTO {
 
     @NotBlank(message = "El nombre del jugador es obligatorio")

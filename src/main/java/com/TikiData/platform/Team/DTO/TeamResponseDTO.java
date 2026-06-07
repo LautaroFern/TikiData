@@ -1,14 +1,16 @@
 package com.TikiData.platform.Team.DTO;
 
+import com.TikiData.platform.Championship.Model.Championship;
 import com.TikiData.platform.Player.Model.PlayerModel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@Builder
 public class TeamResponseDTO {
     private Long id;
     private String name;
@@ -17,7 +19,6 @@ public class TeamResponseDTO {
     private String stadium;
     private String nickname;
     private String president;
-    //Hay que armar el championship para vincularlo
-    //private ChampionshipModel championship;
+    private Championship championship;
     private List<PlayerModel> players;
 }
