@@ -14,7 +14,7 @@ public class TeamMapper {
         teamModel.setStadium(teamRequestDTO.getStadium());
         teamModel.setCountry(teamRequestDTO.getCountry());
         teamModel.setPresident(teamRequestDTO.getPresident());
-        teamModel.setFoundationDate(teamRequestDTO.getFoundationName());
+        teamModel.setFoundationDate(teamRequestDTO.getFoundationDate());
         return teamModel;
     }
 

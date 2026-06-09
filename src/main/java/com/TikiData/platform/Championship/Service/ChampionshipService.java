@@ -64,7 +64,7 @@ public class ChampionshipService implements IChampionshipService {
         TeamModel team = new TeamModel();
         team.setName(teamRequestDTO.getName());
         team.setCountry(teamRequestDTO.getCountry());
-        team.setFoundationDate(teamRequestDTO.getFoundationName());
+        team.setFoundationDate(teamRequestDTO.getFoundationDate());
         team.setStadium(teamRequestDTO.getStadium());
         team.setPresident(teamRequestDTO.getPresident());
         team.setNickname(teamRequestDTO.getNickname());

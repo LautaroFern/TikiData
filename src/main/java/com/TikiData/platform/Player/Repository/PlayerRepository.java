@@ -1,4 +1,7 @@
 package com.TikiData.platform.Player.Repository;
 
-public interface PlayerRepository {
+import com.TikiData.platform.Player.Model.PlayerModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PlayerRepository extends JpaRepository<PlayerModel, Long> {
 }

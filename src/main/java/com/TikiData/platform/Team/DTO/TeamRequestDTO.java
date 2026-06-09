@@ -15,7 +15,7 @@ public class TeamRequestDTO {
 
     @NotNull(message = "La fecha de fundacion es obligatoria")
     @Past(message = "La fecha de fundacion debe estar en pasado")
-    private LocalDate foundationName;
+    private LocalDate foundationDate;
 
     @NotBlank(message = "El pais es obligatorio")
     @Size(min = 2, max = 60, message = "El pais debe tener entre 2 y 60 caracteres")
