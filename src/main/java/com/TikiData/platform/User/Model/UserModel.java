@@ -1,5 +1,6 @@
 package com.TikiData.platform.User.Model;
 
+import com.TikiData.platform.Account.Model.AccountModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,16 +15,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private Role role;//ROLE_USER, ROLE_ADMIN
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    private AccountModel account;
 }

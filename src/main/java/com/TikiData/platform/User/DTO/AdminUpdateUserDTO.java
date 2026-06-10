@@ -21,4 +21,10 @@ public class AdminUpdateUserDTO {
     @NotBlank(message = "El rol es obligatorio")
     @Pattern(regexp = "^(USER|ADMIN)$", message = "El rol debe ser USER o ADMIN")
     private String role;
+
+    @NotBlank(message = "El nombre es obligatorio")
+    private String firstName;
+
+    @NotBlank(message = "El apellido es obligatorio")
+    private String lastName;
 }

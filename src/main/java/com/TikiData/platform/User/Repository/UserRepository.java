@@ -12,11 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long> {
-    boolean existsByEmail(String email);
-    Optional<UserModel> findByEmail(String email);
-
-    @Query("SELECT u FROM UserModel u WHERE " +
-            "(:email IS NULL OR LOWER(u.email) LIKE LOWER(CONCAT('%', :email, '%'))) AND " +
-            "(:role IS NULL OR u.role = :role)")
-    List<UserModel> searchUsersByFilters(@Param("email") String email, @Param("role") Role role);
+    <T> ScopedValue<T> findByEmail(String email);
 }

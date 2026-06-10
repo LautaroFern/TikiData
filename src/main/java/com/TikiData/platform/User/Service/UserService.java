@@ -1,11 +1,15 @@
 package com.TikiData.platform.User.Service;
 
+import com.TikiData.platform.Account.Model.AccountModel;
+import com.TikiData.platform.Account.Repository.AccountRepository;
 import com.TikiData.platform.User.DTO.*;
 import com.TikiData.platform.User.Mapper.UserMapper;
 import com.TikiData.platform.User.Model.Role;
 import com.TikiData.platform.User.Model.UserModel;
 import com.TikiData.platform.User.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,40 +18,52 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService{
-    private UserMapper mapper;
-    private UserRepository repository;
+    private final UserMapper mapper;
+    private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponseDTO createUserByAdmin(AdminCreateUserDTO adminDTO) {
-        if (repository.existsByEmail(adminDTO.getEmail())) {
+    @Transactional
+    public UserResponseDTO registerUser(UserRequestDTO requestDTO) {
+        if (accountRepository.existsByEmail(requestDTO.getEmail())) {
             throw new RuntimeException("El email ya está en uso");
         }
 
-        UserModel newUser = new UserModel();
-        newUser.setEmail(adminDTO.getEmail());
-        newUser.setPassword(adminDTO.getPassword());
-        newUser.setRole(Role.valueOf(adminDTO.getRole()));
+        AccountModel newAccount = mapper.toAccountEntity(requestDTO);
+        UserModel newProfile = mapper.toProfileEntity(requestDTO);
 
-        UserModel savedUser = repository.save(newUser);
+        newAccount.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
 
-        return mapper.toResponseDTO(savedUser);
+        newProfile.setAccount(newAccount);
+        newAccount.setUserProfile(newProfile);
+
+        AccountModel savedAccount = accountRepository.save(newAccount);
+
+        return mapper.toResponseDTO(savedAccount);
     }
 
     @Override
-    public UserResponseDTO registerUser(UserRequestDTO requestDTO) {
-        if (repository.existsByEmail(requestDTO.getEmail())) {
+    @Transactional
+    public UserResponseDTO createUserByAdmin(AdminCreateUserDTO adminDTO) {
+        if (accountRepository.existsByEmail(adminDTO.getEmail())) {
             throw new RuntimeException("El email ya está en uso");
         }
 
-        UserModel newUser = mapper.toEntity(requestDTO);
-        UserModel savedUser = repository.save(newUser);
+        AccountModel newAccount = mapper.toAccountEntity(adminDTO);
+        UserModel newProfile = mapper.toProfileEntity(adminDTO);
 
-        return mapper.toResponseDTO(savedUser);
+        newAccount.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
+
+        newProfile.setAccount(newAccount);
+        newAccount.setUserProfile(newProfile);
+
+        AccountModel savedAccount = accountRepository.save(newAccount);
+        return mapper.toResponseDTO(savedAccount);
     }
 
     @Override
     public List<UserResponseDTO> getAllUsers() {
-        return repository.findAll()
+        return accountRepository.findAll()
                 .stream()
                 .map(mapper::toResponseDTO)
                 .collect(Collectors.toList());
@@ -55,63 +71,67 @@ public class UserService implements IUserService{
 
     @Override
     public UserResponseDTO getUserById(Long id) {
-        UserModel user = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return mapper.toResponseDTO(user);
+        AccountModel account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        return mapper.toResponseDTO(account);
     }
 
     @Override
+    @Transactional
     public UserResponseDTO updateUser(Long id, AdminUpdateUserDTO updateDTO) {
-        UserModel user = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        AccountModel account = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
 
-        if (!user.getEmail().equals(updateDTO.getEmail()) && repository.existsByEmail(updateDTO.getEmail())) {
+        if (!account.getEmail().equals(updateDTO.getEmail()) && accountRepository.existsByEmail(updateDTO.getEmail())) {
             throw new RuntimeException("El email ya está en uso");
         }
 
-        user.setEmail(updateDTO.getEmail());
-        user.setRole(Role.valueOf(updateDTO.getRole()));
+        account.setEmail(updateDTO.getEmail());
+        account.setRole(Role.valueOf(updateDTO.getRole()));
 
-        UserModel updatedUser = repository.save(user);
-        return mapper.toResponseDTO(updatedUser);
+
+
+        return mapper.toResponseDTO(accountRepository.save(account));
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Usuario no encontrado");
+        if (!accountRepository.existsById(id)) {
+            throw new RuntimeException("Cuenta no encontrada");
         }
-        repository.deleteById(id);
+        accountRepository.deleteById(id);
     }
 
     @Override
     public UserResponseDTO getOwnProfile(String currentEmail) {
-        UserModel user = repository.findByEmail(currentEmail)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return mapper.toResponseDTO(user);
+        AccountModel account = accountRepository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        return mapper.toResponseDTO(account);
     }
 
     @Override
+    @Transactional
     public UserResponseDTO updateOwnAccount(String currentEmail, UserUpdateOwnDTO dto) {
-        UserModel user = repository.findByEmail(currentEmail)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        AccountModel account = accountRepository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
 
-        if (!user.getEmail().equals(dto.getEmail()) && repository.existsByEmail(dto.getEmail())) {
+        if (!account.getEmail().equals(dto.getEmail()) && accountRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("El email ya está en uso");
         }
 
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+        account.setEmail(dto.getEmail());
+        account.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        UserModel updatedUser = repository.save(user);
-        return mapper.toResponseDTO(updatedUser);
+        return mapper.toResponseDTO(accountRepository.save(account));
     }
 
     @Override
+    @Transactional
     public void deleteOwnAccount(String currentEmail) {
-        UserModel user = repository.findByEmail(currentEmail)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        repository.delete(user);
+        AccountModel account = accountRepository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        accountRepository.delete(account);
     }
 
     @Override
@@ -125,7 +145,7 @@ public class UserService implements IUserService{
             }
         }
 
-        return repository.searchUsersByFilters(email, roleEnum)
+        return accountRepository.searchAccountsByFilters(email, roleEnum)
                 .stream()
                 .map(mapper::toResponseDTO)
                 .collect(Collectors.toList());

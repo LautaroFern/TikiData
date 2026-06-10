@@ -22,6 +22,12 @@ public class AdminCreateUserDTO {
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
+    @NotBlank(message = "El nombre es obligatorio")
+    private String firstName;
+
+    @NotBlank(message = "El apellido es obligatorio")
+    private String lastName;
+
     @NotBlank(message = "El rol es obligatorio")
     @Pattern(regexp = "^(USER|ADMIN)$", message = "El rol debe ser USER o ADMIN")
     private String role;

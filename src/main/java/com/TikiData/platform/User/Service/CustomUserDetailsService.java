@@ -1,5 +1,7 @@
 package com.TikiData.platform.User.Service;
 
+import com.TikiData.platform.Account.Model.AccountModel;
+import com.TikiData.platform.Account.Repository.AccountRepository;
 import com.TikiData.platform.User.Model.UserModel;
 import com.TikiData.platform.User.Repository.UserRepository;
 
@@ -16,17 +18,19 @@ import java.util.Collections;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository repository;
+
+    private final AccountRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserModel user = repository.findByEmail(email)
+        AccountModel account = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el email: " + email));
-        String roleName = "ROLE_" + user.getRole().name();
+
+        String roleName = "ROLE_" + account.getRole().name();
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
+                account.getEmail(),
+                account.getPassword(),
                 Collections.singleton(new SimpleGrantedAuthority(roleName))
         );
     }
