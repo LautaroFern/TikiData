@@ -25,8 +25,8 @@ public class ChampionshipController {
         return ResponseEntity.ok(championshipService.findAllChampionships());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ChampionshipResponseDTO> getChampionshipById(@PathVariable String nombre) {
+    @GetMapping("/name")
+    public ResponseEntity<ChampionshipResponseDTO> getChampionshipByName(@RequestParam String nombre) {
         return ResponseEntity.ok(championshipService.findByName(nombre));
     }
 
