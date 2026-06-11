@@ -18,6 +18,15 @@ public class TeamMapper {
         return teamModel;
     }
 
+    public void updateTeamFromDTO(TeamRequestDTO teamRequestDTO, TeamModel teamModel) {
+        teamModel.setName(teamRequestDTO.getName());
+        teamModel.setNickname(teamRequestDTO.getNickname());
+        teamModel.setStadium(teamRequestDTO.getStadium());
+        teamModel.setCountry(teamRequestDTO.getCountry());
+        teamModel.setPresident(teamRequestDTO.getPresident());
+        teamModel.setFoundationDate(teamRequestDTO.getFoundationDate());
+    }
+
     public TeamResponseDTO toDTO(TeamModel teamModel) {
         TeamResponseDTO teamResponseDTO = new TeamResponseDTO();
         teamResponseDTO.setId(teamModel.getId());
@@ -29,4 +38,6 @@ public class TeamMapper {
         teamResponseDTO.setFoundationDate(teamModel.getFoundationDate());
         return teamResponseDTO;
     }
+
+
 }
