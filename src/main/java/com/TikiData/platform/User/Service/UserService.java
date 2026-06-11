@@ -2,6 +2,11 @@ package com.TikiData.platform.User.Service;
 
 import com.TikiData.platform.Account.Model.AccountModel;
 import com.TikiData.platform.Account.Repository.AccountRepository;
+import com.TikiData.platform.Common.Exception.TeamNotFoundException;
+import com.TikiData.platform.Team.DTO.TeamResponseDTO;
+import com.TikiData.platform.Team.Mapper.TeamMapper;
+import com.TikiData.platform.Team.Model.TeamModel;
+import com.TikiData.platform.Team.Repository.TeamRepository;
 import com.TikiData.platform.User.DTO.*;
 import com.TikiData.platform.User.Mapper.UserMapper;
 import com.TikiData.platform.User.Model.Role;
@@ -21,6 +26,8 @@ public class UserService implements IUserService{
     private final UserMapper mapper;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TeamRepository teamRepository;
+    private final TeamMapper teamMapper;
 
     @Override
     @Transactional
@@ -149,5 +156,55 @@ public class UserService implements IUserService{
                 .stream()
                 .map(mapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDTO addFavoriteTeam(String email, Long teamId) {
+        AccountModel account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+
+        TeamModel team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado con el ID: " + teamId));
+
+        if (!account.getUserProfile().getFavoriteTeams().contains(team)) {
+            account.getUserProfile().getFavoriteTeams().add(team);
+        }
+
+        return mapper.toResponseDTO(accountRepository.save(account));
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDTO removeFavoriteTeam(String email, Long teamId) {
+        AccountModel account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        TeamModel team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado"));
+
+        account.getUserProfile().getFavoriteTeams().remove(team);
+        return mapper.toResponseDTO(accountRepository.save(account));
+    }
+
+    public List<TeamResponseDTO> getFavoriteTeams(String email) {
+        AccountModel account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+
+        return account.getUserProfile().getFavoriteTeams()
+                .stream()
+                .map(teamMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public List<TeamResponseDTO> filterFavoriteTeams(String email, String name, String country) {
+        AccountModel account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        return account.getUserProfile().getFavoriteTeams().stream()
+                .filter(team -> name == null || team.getName().toLowerCase().contains(name.toLowerCase()))
+                .filter(team -> country == null || team.getCountry().toLowerCase().contains(country.toLowerCase()))
+                .map(teamMapper::toDTO)
+                .toList();
+
     }
 }

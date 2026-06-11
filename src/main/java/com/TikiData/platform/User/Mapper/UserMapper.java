@@ -1,12 +1,15 @@
 package com.TikiData.platform.User.Mapper;
 
 import com.TikiData.platform.Account.Model.AccountModel;
+import com.TikiData.platform.Team.Model.TeamModel;
 import com.TikiData.platform.User.DTO.AdminCreateUserDTO;
 import com.TikiData.platform.User.DTO.UserRequestDTO;
 import com.TikiData.platform.User.DTO.UserResponseDTO;
 import com.TikiData.platform.User.Model.Role;
 import com.TikiData.platform.User.Model.UserModel;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UserMapper {
@@ -48,6 +51,14 @@ public class UserMapper {
         if (account.getUserProfile() != null) {
             dto.setFirstName(account.getUserProfile().getFirstName());
             dto.setLastName(account.getUserProfile().getLastName());
+
+            if (account.getUserProfile().getFavoriteTeams() != null) {
+                List<String> teamNames = account.getUserProfile().getFavoriteTeams()
+                        .stream()
+                        .map(TeamModel::getName)
+                        .toList();
+                dto.setFavoriteTeams(teamNames);
+            }
         }
         return dto;
     }

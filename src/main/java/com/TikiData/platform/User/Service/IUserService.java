@@ -1,5 +1,6 @@
 package com.TikiData.platform.User.Service;
 
+import com.TikiData.platform.Team.DTO.TeamResponseDTO;
 import com.TikiData.platform.User.DTO.*;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface IUserService {
     UserResponseDTO updateOwnAccount(String currentEmail, UserUpdateOwnDTO dto);
     void deleteOwnAccount(String currentEmail);
     List<UserResponseDTO> filterUsers(String email, String role);
+    UserResponseDTO addFavoriteTeam(String email, Long teamId);
+    UserResponseDTO removeFavoriteTeam(String email, Long teamId);
+    List<TeamResponseDTO> filterFavoriteTeams(String email, String name, String country);
 }

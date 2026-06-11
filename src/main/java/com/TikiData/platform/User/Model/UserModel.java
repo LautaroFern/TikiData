@@ -1,11 +1,15 @@
 package com.TikiData.platform.User.Model;
 
 import com.TikiData.platform.Account.Model.AccountModel;
+import com.TikiData.platform.Team.Model.TeamModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,6 +19,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserModel {
 
+    @Id
+    private Long id;
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -22,6 +29,15 @@ public class UserModel {
     private String lastName;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private AccountModel account;
-}
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_favorite_teams",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
+    @Builder.Default
+    private List<TeamModel> favoriteTeams = new ArrayList<>();}
