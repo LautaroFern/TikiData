@@ -7,7 +7,6 @@ import com.TikiData.platform.Championship.Model.Championship;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
 import com.TikiData.platform.Common.Exception.ChampionshipNotFoundException;
 import com.TikiData.platform.Team.DTO.TeamRequestDTO;
-import com.TikiData.platform.Team.Mapper.TeamMapper;
 import com.TikiData.platform.Team.Model.TeamModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
