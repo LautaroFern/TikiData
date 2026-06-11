@@ -29,15 +29,16 @@ public class UserModel {
     private String lastName;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private AccountModel account;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_favorite_teams",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
     @Builder.Default
-    private List<TeamModel> favoriteTeams = new ArrayList<>();}
+    private List<TeamModel> favoriteTeams = new ArrayList<>();
+}

@@ -10,11 +10,13 @@ import com.TikiData.platform.Team.DTO.TeamRequestDTO;
 import com.TikiData.platform.Team.Model.TeamModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
+@Service
 public class ChampionshipService implements IChampionshipService {
     private final ChampionshipMapper championshipMapper;
     private final ChampionshipRepository championshipRepository;

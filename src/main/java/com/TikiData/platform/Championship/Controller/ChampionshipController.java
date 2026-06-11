@@ -2,12 +2,10 @@ package com.TikiData.platform.Championship.Controller;
 
 import com.TikiData.platform.Championship.DTO.ChampionshipRequestDTO;
 import com.TikiData.platform.Championship.DTO.ChampionshipResponseDTO;
-import com.TikiData.platform.Championship.Mapper.ChampionshipMapper;
-import com.TikiData.platform.Championship.Model.Championship;
 import com.TikiData.platform.Championship.Service.ChampionshipService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChampionshipController {
 
+    @Autowired
     private final ChampionshipService championshipService;
 
     @GetMapping
