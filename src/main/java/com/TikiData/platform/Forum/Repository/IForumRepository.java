@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IForumRepository extends JpaRepository<ForumModel, Long> {
+    ForumModel findByName (String name);
 }
