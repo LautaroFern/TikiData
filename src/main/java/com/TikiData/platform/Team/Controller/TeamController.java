@@ -20,7 +20,7 @@ public class TeamController {
 
     private final TeamService teamService;
 
-    @GetMapping
+        @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<TeamResponseDTO>> getAllTeams() {
         return ResponseEntity.ok(teamService.findAllTeams());
@@ -55,6 +55,7 @@ public class TeamController {
         List<TeamResponseDTO> response = teamService.filterTeams(name, country);
         return ResponseEntity.ok(response);
     }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")

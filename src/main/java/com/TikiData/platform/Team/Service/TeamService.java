@@ -4,6 +4,7 @@ import com.TikiData.platform.Championship.Model.Championship;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
 import com.TikiData.platform.Common.Exception.ChampionshipNotFoundException;
 import com.TikiData.platform.Common.Exception.TeamNotFoundException;
+import com.TikiData.platform.Player.DTO.PlayerResponseDTO;
 import com.TikiData.platform.Team.DTO.TeamRequestDTO;
 import com.TikiData.platform.Team.DTO.TeamResponseDTO;
 import com.TikiData.platform.Team.Mapper.TeamMapper;
@@ -21,6 +22,11 @@ public class TeamService implements ITeamService {
     private final TeamMapper teamMapper;
     private final TeamRepository teamRepository;
     private final ChampionshipRepository championshipRepository;
+
+    @Override
+    public List<PlayerResponseDTO> listPlayers() {
+        return List.of();
+    }
 
     @Override
     public List<TeamResponseDTO> findAllTeams() {

@@ -3,11 +3,15 @@ package com.TikiData.platform.Forum.Mapper;
 import com.TikiData.platform.Forum.DTO.ForumRequestDTO;
 import com.TikiData.platform.Forum.DTO.ForumResponseDTO;
 import com.TikiData.platform.Forum.Model.ForumModel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class ForumMapper {
 
     private final CommentMapper commentMapper = new CommentMapper();

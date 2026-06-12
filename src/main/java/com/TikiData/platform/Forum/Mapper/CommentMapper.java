@@ -3,9 +3,11 @@ package com.TikiData.platform.Forum.Mapper;
 import com.TikiData.platform.Forum.DTO.CommentRequestDTO;
 import com.TikiData.platform.Forum.DTO.CommentResponseDTO;
 import com.TikiData.platform.Forum.Model.CommentModel;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Component
 public class CommentMapper {
 
     public CommentModel toEntity(CommentRequestDTO requestDTO){
