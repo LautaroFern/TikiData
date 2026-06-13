@@ -2,8 +2,7 @@ package com.TikiData.platform.Game.Service;
 
 import com.TikiData.platform.Championship.Model.Championship;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
-import com.TikiData.platform.Common.Exception.ChampionshipNotFoundException;
-import com.TikiData.platform.Common.Exception.TeamNotFoundException;
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Game.DTO.GameEventRequestDTO;
 import com.TikiData.platform.Game.DTO.GameEventResponseDTO;
 import com.TikiData.platform.Game.DTO.GameRequestDTO;
@@ -42,13 +41,13 @@ public class GameService implements IGameService {
     @Override
     public GameResponseDTO saveGame(GameRequestDTO dto) {
         Championship championship = championshipRepository.findById(dto.getChampionshipId())
-                .orElseThrow(() -> new ChampionshipNotFoundException("Campeonato no encontrado con el ID: " + dto.getChampionshipId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado con el ID: " + dto.getChampionshipId()));
 
         TeamModel homeTeam = teamRepository.findById(dto.getHomeTeamId())
-                .orElseThrow(() -> new TeamNotFoundException("Equipo local no encontrado con el ID: " + dto.getHomeTeamId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Equipo local no encontrado con el ID: " + dto.getHomeTeamId()));
 
         TeamModel awayTeam = teamRepository.findById(dto.getAwayTeamId())
-                .orElseThrow(() -> new TeamNotFoundException("Equipo visitante no encontrado con el ID: " + dto.getAwayTeamId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Equipo visitante no encontrado con el ID: " + dto.getAwayTeamId()));
 
         GameModel game = gameMapper.toEntity(dto);
         game.setChampionship(championship);

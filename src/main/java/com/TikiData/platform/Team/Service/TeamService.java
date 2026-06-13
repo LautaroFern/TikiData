@@ -2,7 +2,7 @@ package com.TikiData.platform.Team.Service;
 
 import com.TikiData.platform.Championship.Model.Championship;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
-import com.TikiData.platform.Common.Exception.ChampionshipNotFoundException;
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Common.Exception.TeamNotFoundException;
 import com.TikiData.platform.Player.DTO.PlayerResponseDTO;
 import com.TikiData.platform.Team.DTO.TeamRequestDTO;
@@ -44,7 +44,7 @@ public class TeamService implements ITeamService {
     @Transactional
     public TeamResponseDTO saveTeam(TeamRequestDTO teamRequestDTO) {
         Championship championship = championshipRepository.findById(teamRequestDTO.getChampionshipId())
-                .orElseThrow(() -> new ChampionshipNotFoundException("Campeonato no encontrado con el ID: " + teamRequestDTO.getChampionshipId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado con el ID: " + teamRequestDTO.getChampionshipId()));
 
         TeamModel teamModel = teamMapper.toEntity(teamRequestDTO);
         teamModel.setChampionship(championship);
@@ -52,13 +52,13 @@ public class TeamService implements ITeamService {
     }
 
     @Transactional
-    public TeamResponseDTO updateTeam(Long id, TeamRequestDTO teamRequestDTO) throws TeamNotFoundException {
+    public TeamResponseDTO updateTeam(Long id, TeamRequestDTO teamRequestDTO) throws ResourceNotFoundException {
         TeamModel teamModel = teamRepository.findById(id).orElseThrow(
-                () -> new TeamNotFoundException("Equipo no encontrado con el ID: " + id)
+                () -> new ResourceNotFoundException("Equipo no encontrado con el ID: " + id)
         );
 
         Championship championship = championshipRepository.findById(teamRequestDTO.getChampionshipId())
-                .orElseThrow(() -> new ChampionshipNotFoundException("Campeonato no encontrado con el ID: " + teamRequestDTO.getChampionshipId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado con el ID: " + teamRequestDTO.getChampionshipId()));
 
         teamMapper.updateTeamFromDTO(teamRequestDTO, teamModel);
         teamModel.setChampionship(championship);
@@ -68,7 +68,7 @@ public class TeamService implements ITeamService {
     @Transactional
     public void deleteTeam(Long id) {
         TeamModel teamModel = teamRepository.findById(id).orElseThrow(
-                () -> new TeamNotFoundException("Equipo no encontrado con el ID: " + id)
+                () -> new ResourceNotFoundException("Equipo no encontrado con el ID: " + id)
         );
         teamRepository.delete(teamModel);
     }

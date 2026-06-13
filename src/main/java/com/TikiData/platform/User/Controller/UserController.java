@@ -78,9 +78,7 @@ public class UserController {
 
     @GetMapping("/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserResponseDTO>> filterUsers(
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String role) {
+    public ResponseEntity<List<UserResponseDTO>> filterUsers(@RequestParam(required = false) String email, @RequestParam(required = false) String role) {
 
         List<UserResponseDTO> response = userService.filterUsers(email, role);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -98,8 +96,7 @@ public class UserController {
 
     @DeleteMapping("/profile/{email}/favorite-team")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<UserResponseDTO> removeFavoriteTeam(@PathVariable String email,
-                                                              @PathVariable Long teamId) {
+    public ResponseEntity<UserResponseDTO> removeFavoriteTeam(@PathVariable String email, @PathVariable Long teamId) {
 
         UserResponseDTO response = userService.removeFavoriteTeam(email, teamId);
         return ResponseEntity.ok(response);

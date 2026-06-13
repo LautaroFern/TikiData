@@ -6,6 +6,7 @@ import com.TikiData.platform.News.DTO.NewsResponseDTO;
 import com.TikiData.platform.News.Service.NewsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/news")
 @RequiredArgsConstructor
 public class NewsController {
+    @Autowired
     private final NewsService newsService;
 
     @PostMapping("/create")

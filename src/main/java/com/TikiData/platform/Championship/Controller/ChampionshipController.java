@@ -3,10 +3,11 @@ package com.TikiData.platform.Championship.Controller;
 import com.TikiData.platform.Championship.DTO.ChampionshipRequestDTO;
 import com.TikiData.platform.Championship.DTO.ChampionshipResponseDTO;
 import com.TikiData.platform.Championship.Service.ChampionshipService;
+import com.TikiData.platform.Team.DTO.TeamRequestDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChampionshipController {
 
-    @Autowired
     private final ChampionshipService championshipService;
 
     @GetMapping
@@ -24,26 +24,40 @@ public class ChampionshipController {
         return ResponseEntity.ok(championshipService.findAllChampionships());
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<ChampionshipResponseDTO> getChampionshipByName(@RequestParam String nombre) {
+    @GetMapping("/findChampionship/{name}")
+    public ResponseEntity<ChampionshipResponseDTO> getChampionshipByName(@PathVariable String nombre) {
         return ResponseEntity.ok(championshipService.findByName(nombre));
     }
 
-    @PostMapping
+    @PostMapping("/createChampionship")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ChampionshipResponseDTO> saveChampionship(@RequestBody @Valid ChampionshipRequestDTO championshipRequestDTO) {
         return ResponseEntity.ok(championshipService.saveChampionship(championshipRequestDTO));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateChampionship/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ChampionshipResponseDTO> updateChampionship(@PathVariable Long id, @RequestBody @Valid ChampionshipRequestDTO championshipRequestDTO) {
         return ResponseEntity.ok(championshipService.updateChampionship(championshipRequestDTO, id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteChampionship/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteChampionship(@PathVariable Long id) {
         championshipService.deleteChampionshipById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/ascenso/{teamID}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ChampionshipResponseDTO> addTeamToChampionship(@PathVariable("teamID") Long id, TeamRequestDTO requestDTO){
+        return ResponseEntity.ok(championshipService.addTeamToChampionship(id, requestDTO));
+    }
 
+    @PutMapping("/descenso/{championshipID}/team/{teamID}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> removeTeamFromChampionship(@PathVariable("teamID") Long idTeam, @PathVariable("championshipID") Long idChampionchip){
+        championshipService.removeTeamFromChampionship(idTeam, idChampionchip);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -3,7 +3,7 @@ package com.TikiData.platform.Championship.Service;
 
 import com.TikiData.platform.Championship.DTO.ChampionshipRequestDTO;
 import com.TikiData.platform.Championship.DTO.ChampionshipResponseDTO;
-import com.TikiData.platform.Common.Exception.ChampionshipNotFoundException;
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Team.DTO.TeamRequestDTO;
 
 import java.util.List;
@@ -13,11 +13,13 @@ public interface IChampionshipService {
 
     List<ChampionshipResponseDTO> findAllChampionships();
 
-    ChampionshipResponseDTO updateChampionship(ChampionshipRequestDTO championshipRequestDTO, Long id) throws ChampionshipNotFoundException;
+    ChampionshipResponseDTO updateChampionship(ChampionshipRequestDTO championshipRequestDTO, Long id);
 
-    void deleteChampionshipById(Long id) throws ChampionshipNotFoundException;
+    void deleteChampionshipById(Long id);
 
     ChampionshipResponseDTO findByName(String name);
 
-    ChampionshipResponseDTO addTeamToChampionship(Long id, TeamRequestDTO teamRequestDTO) throws ChampionshipNotFoundException;
+    ChampionshipResponseDTO addTeamToChampionship(Long id, TeamRequestDTO teamRequestDTO);
+
+    void removeTeamFromChampionship(Long idTeam, Long idChampionship);
 }
