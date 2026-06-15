@@ -3,7 +3,7 @@ package com.TikiData.platform.Championship.Service;
 import com.TikiData.platform.Championship.DTO.ChampionshipRequestDTO;
 import com.TikiData.platform.Championship.DTO.ChampionshipResponseDTO;
 import com.TikiData.platform.Championship.Mapper.ChampionshipMapper;
-import com.TikiData.platform.Championship.Model.Championship;
+import com.TikiData.platform.Championship.Model.ChampionshipModel;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
 import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Team.DTO.TeamRequestDTO;
@@ -25,7 +25,7 @@ public class ChampionshipService implements IChampionshipService {
     @Transactional
     @Override
     public ChampionshipResponseDTO saveChampionship(ChampionshipRequestDTO championshipRequestDTO) {
-        Championship championship = championshipMapper.toEntity(championshipRequestDTO);
+        ChampionshipModel championship = championshipMapper.toEntity(championshipRequestDTO);
         return championshipMapper.toDTO(championshipRepository.save(championship));
     }
 
@@ -41,7 +41,7 @@ public class ChampionshipService implements IChampionshipService {
     @Transactional
     @Override
     public ChampionshipResponseDTO updateChampionship(ChampionshipRequestDTO championshipRequestDTO, Long id) throws ResourceNotFoundException {
-        Championship championship = championshipRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Championship not found with id: " + id));
+        ChampionshipModel championship = championshipRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Championship not found with id: " + id));
         championship.setName(championshipRequestDTO.getName());
         championship.setSeason(championshipRequestDTO.getSeason());
         championship.setCountry(championshipRequestDTO.getCountry());
@@ -55,21 +55,21 @@ public class ChampionshipService implements IChampionshipService {
     @Transactional
     @Override
     public void deleteChampionshipById(Long id) throws ResourceNotFoundException {
-        Championship championship = championshipRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Championship not found"));
+        ChampionshipModel championship = championshipRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Championship not found"));
         championshipRepository.delete(championship);
     }
 
     @Transactional(readOnly = true)
     @Override
     public ChampionshipResponseDTO findByName(String name) {
-        Championship championship = championshipRepository.findByChampionshipName(name);
+        ChampionshipModel championship = championshipRepository.findByChampionshipName(name);
         return championshipMapper.toDTO(championship);
     }
 
     @Transactional
     @Override
     public ChampionshipResponseDTO addTeamToChampionship(Long id, TeamRequestDTO teamRequestDTO) throws ResourceNotFoundException {
-        Championship championship = championshipRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Championship not found"));
+        ChampionshipModel championship = championshipRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Championship not found"));
 
         TeamModel team = new TeamModel();
         team.setName(teamRequestDTO.getName());
@@ -92,7 +92,7 @@ public class ChampionshipService implements IChampionshipService {
         TeamModel teamModel = new TeamModel();
         teamModel.setId(idTeam);
 
-        Championship championship = championshipRepository.findById(idChampionship).orElseThrow(() -> new ResourceNotFoundException("Championship no encontrado"));
+        ChampionshipModel championship = championshipRepository.findById(idChampionship).orElseThrow(() -> new ResourceNotFoundException("Championship no encontrado"));
 
         if (championship.getListTeams().contains(teamModel)) {
             championship.getListTeams().remove(teamModel);

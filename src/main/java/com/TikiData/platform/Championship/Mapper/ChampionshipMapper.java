@@ -2,7 +2,7 @@ package com.TikiData.platform.Championship.Mapper;
 
 import com.TikiData.platform.Championship.DTO.ChampionshipRequestDTO;
 import com.TikiData.platform.Championship.DTO.ChampionshipResponseDTO;
-import com.TikiData.platform.Championship.Model.Championship;
+import com.TikiData.platform.Championship.Model.ChampionshipModel;
 import com.TikiData.platform.Team.Model.TeamModel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class ChampionshipMapper {
-    public Championship toEntity(ChampionshipRequestDTO championshipRequestDTO) {
-        Championship championship = new Championship();
+    public ChampionshipModel toEntity(ChampionshipRequestDTO championshipRequestDTO) {
+        ChampionshipModel championship = new ChampionshipModel();
         championship.setName(championshipRequestDTO.getName());
         championship.setCountry(championshipRequestDTO.getCountry());
         championship.setCantidadEquipos(championshipRequestDTO.getCantidadEquipos());
@@ -21,7 +21,7 @@ public class ChampionshipMapper {
         return championship;
     }
 
-    public ChampionshipResponseDTO toDTO(Championship championship) {
+    public ChampionshipResponseDTO toDTO(ChampionshipModel championship) {
         ChampionshipResponseDTO championshipResponseDTO = new ChampionshipResponseDTO();
         championshipResponseDTO.setId(championship.getId());
         championshipResponseDTO.setName(championship.getName());

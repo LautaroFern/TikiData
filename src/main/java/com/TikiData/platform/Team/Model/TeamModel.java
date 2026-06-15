@@ -1,6 +1,6 @@
 package com.TikiData.platform.Team.Model;
 
-import com.TikiData.platform.Championship.Model.Championship;
+import com.TikiData.platform.Championship.Model.ChampionshipModel;
 import com.TikiData.platform.Player.Model.PlayerModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,7 +42,7 @@ public class TeamModel {
 
     @ManyToOne
     @JoinColumn(name = "championship_id")
-    private Championship championship;
+    private ChampionshipModel championship;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlayerModel> players;
