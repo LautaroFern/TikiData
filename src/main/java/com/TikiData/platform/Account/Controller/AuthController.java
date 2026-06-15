@@ -1,8 +1,8 @@
 package com.TikiData.platform.Account.Controller;
 
+import com.TikiData.platform.Account.DTO.AuthRequestDTO;
 import com.TikiData.platform.Account.Service.AuthService;
-import com.TikiData.platform.User.DTO.AuthRequestDTO;
-import com.TikiData.platform.User.DTO.AuthResponseDTO;
+import com.TikiData.platform.Account.DTO.AuthResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

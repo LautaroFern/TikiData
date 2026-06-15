@@ -1,4 +1,4 @@
-package com.TikiData.platform.User.DTO;
+package com.TikiData.platform.Account.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
