@@ -25,8 +25,8 @@ public class ChampionshipController {
     }
 
     @GetMapping("/findChampionship/{name}")
-    public ResponseEntity<ChampionshipResponseDTO> getChampionshipByName(@PathVariable String nombre) {
-        return ResponseEntity.ok(championshipService.findByName(nombre));
+    public ResponseEntity<ChampionshipResponseDTO> getChampionshipByName(@PathVariable String name) {
+        return ResponseEntity.ok(championshipService.findByName(name));
     }
 
     @PostMapping("/createChampionship")
@@ -50,9 +50,7 @@ public class ChampionshipController {
 
     @PutMapping("/ascenso/{championshipID}/team/{teamID}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ChampionshipResponseDTO> addTeamToChampionship(
-            @PathVariable("championshipID") Long championshipId,
-            @PathVariable("teamID") Long teamId){
+    public ResponseEntity<ChampionshipResponseDTO> addTeamToChampionship(@PathVariable("championshipID") Long championshipId, @PathVariable("teamID") Long teamId){
         return ResponseEntity.ok(championshipService.addTeamToChampionship(championshipId, teamId));
     }
 

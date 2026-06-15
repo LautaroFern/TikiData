@@ -1,5 +1,6 @@
 package com.TikiData.platform.Forum.Service;
 
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Forum.DTO.CommentRequestDTO;
 import com.TikiData.platform.Forum.DTO.CommentResponseDTO;
 import com.TikiData.platform.Forum.Mapper.CommentMapper;
@@ -23,7 +24,7 @@ public class CommentService  implements ICommentService{
 
     @Override
     public void deleteComment(Long id) {
-        CommentModel commentModel = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comentario no encontrado"));
+        CommentModel commentModel = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comentario no encontrado"));
         commentRepository.delete(commentModel);
     }
 }

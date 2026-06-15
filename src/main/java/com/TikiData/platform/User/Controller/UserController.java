@@ -86,9 +86,7 @@ public class UserController {
 
     @PutMapping("/profile/{email}/favorite-team/{teamId}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<UserResponseDTO> addFavoriteTeam(
-            @PathVariable String email,
-            @PathVariable Long teamId) {
+    public ResponseEntity<UserResponseDTO> addFavoriteTeam(@PathVariable String email, @PathVariable Long teamId) {
 
         UserResponseDTO response = userService.addFavoriteTeam(email, teamId);
         return ResponseEntity.ok(response);

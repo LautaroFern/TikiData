@@ -9,13 +9,14 @@ import java.util.List;
 public interface IPlayerService {
     List<PlayerResponseDTO> findAll();
 
-    PlayerResponseDTO findById(Long id)throws PlayerNotFoundException;
+    PlayerResponseDTO findById(Long id);
 
-    PlayerResponseDTO findByName(String name)throws PlayerNotFoundException;
+    PlayerResponseDTO findByName(String name);
 
     PlayerResponseDTO savePlayer(PlayerRequestDTO playerRequestDTO);
 
     PlayerResponseDTO updatePlayer(PlayerRequestDTO playerRequestDTO, Long id);
 
     void deletePlayer(Long id);
+
 }

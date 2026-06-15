@@ -1,6 +1,7 @@
 package com.TikiData.platform.Player.Service;
 
 import com.TikiData.platform.Common.Exception.PlayerNotFoundException;
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Common.Exception.TeamNotFoundException;
 import com.TikiData.platform.Player.DTO.PlayerRequestDTO;
 import com.TikiData.platform.Player.DTO.PlayerResponseDTO;
@@ -30,17 +31,17 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public PlayerResponseDTO findById(Long id) throws PlayerNotFoundException {
+    public PlayerResponseDTO findById(Long id) {
         return playerMapper.toDTO(playerRepository.findById(id).orElseThrow(
-                () -> new PlayerNotFoundException("Player not found with id " + id)
+                () -> new ResourceNotFoundException("Player not found with id " + id)
         ));
     }
 
     @Override
-    public PlayerResponseDTO findByName(String name) throws PlayerNotFoundException {
+    public PlayerResponseDTO findByName(String name) {
         PlayerModel playerModel = playerRepository.findByName(name);
         if (playerModel == null){
-            throw new PlayerNotFoundException("Jugador no encontrado con el nombre: " + name);
+            throw new ResourceNotFoundException("Jugador no encontrado con el nombre: " + name);
         }
         return playerMapper.toDTO(playerModel);
     }
@@ -57,11 +58,11 @@ public class PlayerService implements IPlayerService {
     public PlayerResponseDTO updatePlayer(PlayerRequestDTO playerRequestDTO, Long id) {
 
         PlayerModel playerModel = playerRepository.findById(id).orElseThrow(
-                () -> new PlayerNotFoundException("Player not found with id " + id)
+                () -> new ResourceNotFoundException("Player not found with id " + id)
         );
 
         TeamModel teamModel = teamRepository.findById(playerRequestDTO.getTeamId()).orElseThrow(
-                () -> new TeamNotFoundException("Team not found")
+                () -> new ResourceNotFoundException("Team not found")
         );
         playerModel.setName(playerRequestDTO.getName());
         playerModel.setNumber(playerRequestDTO.getNumber());
@@ -76,7 +77,7 @@ public class PlayerService implements IPlayerService {
     @Transactional
     public void deletePlayer(Long id) {
         PlayerModel  playerModel = playerRepository.findById(id).orElseThrow(
-                () -> new PlayerNotFoundException("Player not found with id " + id)
+                () -> new ResourceNotFoundException("Player not found with id " + id)
         );
         playerRepository.delete(playerModel);
     }

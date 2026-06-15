@@ -1,5 +1,6 @@
 package com.TikiData.platform.Forum.Service;
 
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Forum.DTO.CommentRequestDTO;
 import com.TikiData.platform.Forum.DTO.CommentResponseDTO;
 import com.TikiData.platform.Forum.DTO.ForumRequestDTO;
@@ -33,7 +34,7 @@ public class ForumService implements IForumService {
 
     @Override
     public void deleteForum(Long id) {
-        ForumModel forumModel = forumRepository.findById(id).orElseThrow(() -> new RuntimeException("Foro no encontrado"));
+        ForumModel forumModel = forumRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
         forumRepository.delete(forumModel);
     }
 
@@ -45,7 +46,7 @@ public class ForumService implements IForumService {
 
     @Override
     public ForumResponseDTO addComment(CommentRequestDTO commentRequestDTO) {
-        ForumModel forumModel = forumRepository.findById(commentRequestDTO.getForumId()).orElseThrow(() -> new RuntimeException("Foro no encontrado"));
+        ForumModel forumModel = forumRepository.findById(commentRequestDTO.getForumId()).orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
 
         CommentModel commentModel = new CommentModel();
         commentModel.setContent(commentRequestDTO.getContent());
@@ -62,14 +63,14 @@ public class ForumService implements IForumService {
 
     @Override
     public void deleteComment(Long id) {
-        CommentModel commentModel = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comentario no encontrado"));
-        ForumModel forumModel = forumRepository.findById(commentModel.getForum().getId()).orElseThrow(() -> new RuntimeException("Foro no encontrado"));
+        CommentModel commentModel = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comentario no encontrado"));
+        ForumModel forumModel = forumRepository.findById(commentModel.getForum().getId()).orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
         forumModel.getComments().remove(commentModel);
     }
 
     @Override
     public List<CommentResponseDTO> listComments(Long id) {
-        ForumModel forumModel = forumRepository.findById(id).orElseThrow(() -> new RuntimeException("Foro no encontrado"));
+        ForumModel forumModel = forumRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
         return forumModel.getComments()
                 .stream()
                 .map(commentMapper::toResponse)

@@ -2,6 +2,8 @@ package com.TikiData.platform.User.Service;
 
 import com.TikiData.platform.Account.Model.AccountModel;
 import com.TikiData.platform.Account.Repository.AccountRepository;
+import com.TikiData.platform.Common.Exception.ResourceAlreadyExistsException;
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Common.Exception.TeamNotFoundException;
 import com.TikiData.platform.Team.DTO.TeamResponseDTO;
 import com.TikiData.platform.Team.Mapper.TeamMapper;
@@ -33,7 +35,7 @@ public class UserService implements IUserService{
     @Transactional
     public UserResponseDTO registerUser(UserRequestDTO requestDTO) {
         if (accountRepository.existsByEmail(requestDTO.getEmail())) {
-            throw new RuntimeException("El email ya está en uso");
+            throw new ResourceAlreadyExistsException("El email ya está en uso");
         }
 
         AccountModel newAccount = mapper.toAccountEntity(requestDTO);
@@ -53,7 +55,7 @@ public class UserService implements IUserService{
     @Transactional
     public UserResponseDTO createUserByAdmin(AdminCreateUserDTO adminDTO) {
         if (accountRepository.existsByEmail(adminDTO.getEmail())) {
-            throw new RuntimeException("El email ya está en uso");
+            throw new ResourceAlreadyExistsException("El email ya está en uso");
         }
 
         AccountModel newAccount = mapper.toAccountEntity(adminDTO);
@@ -79,7 +81,7 @@ public class UserService implements IUserService{
     @Override
     public UserResponseDTO getUserById(Long id) {
         AccountModel account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
         return mapper.toResponseDTO(account);
     }
 
@@ -87,10 +89,10 @@ public class UserService implements IUserService{
     @Transactional
     public UserResponseDTO updateUser(Long id, AdminUpdateUserDTO updateDTO) {
         AccountModel account = accountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
 
         if (!account.getEmail().equals(updateDTO.getEmail()) && accountRepository.existsByEmail(updateDTO.getEmail())) {
-            throw new RuntimeException("El email ya está en uso");
+            throw new ResourceAlreadyExistsException("El email ya está en uso");
         }
 
         account.setEmail(updateDTO.getEmail());
@@ -105,7 +107,7 @@ public class UserService implements IUserService{
     @Transactional
     public void deleteUser(Long id) {
         if (!accountRepository.existsById(id)) {
-            throw new RuntimeException("Cuenta no encontrada");
+            throw new ResourceNotFoundException("Cuenta no encontrada");
         }
         accountRepository.deleteById(id);
     }
@@ -113,7 +115,7 @@ public class UserService implements IUserService{
     @Override
     public UserResponseDTO getOwnProfile(String currentEmail) {
         AccountModel account = accountRepository.findByEmail(currentEmail)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
         return mapper.toResponseDTO(account);
     }
 
@@ -121,10 +123,10 @@ public class UserService implements IUserService{
     @Transactional
     public UserResponseDTO updateOwnAccount(String currentEmail, UserUpdateOwnDTO dto) {
         AccountModel account = accountRepository.findByEmail(currentEmail)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
 
         if (!account.getEmail().equals(dto.getEmail()) && accountRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("El email ya está en uso");
+            throw new ResourceAlreadyExistsException("El email ya está en uso");
         }
 
         account.setEmail(dto.getEmail());
@@ -137,7 +139,7 @@ public class UserService implements IUserService{
     @Transactional
     public void deleteOwnAccount(String currentEmail) {
         AccountModel account = accountRepository.findByEmail(currentEmail)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
         accountRepository.delete(account);
     }
 
@@ -162,10 +164,10 @@ public class UserService implements IUserService{
     @Transactional
     public UserResponseDTO addFavoriteTeam(String email, Long teamId) {
         AccountModel account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
 
         TeamModel team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado con el ID: " + teamId));
+                .orElseThrow(() -> new ResourceNotFoundException("Equipo no encontrado con el ID: " + teamId));
 
         if (!account.getUserProfile().getFavoriteTeams().contains(team)) {
             account.getUserProfile().getFavoriteTeams().add(team);
@@ -178,9 +180,9 @@ public class UserService implements IUserService{
     @Transactional
     public UserResponseDTO removeFavoriteTeam(String email, Long teamId) {
         AccountModel account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
         TeamModel team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Equipo no encontrado"));
 
         account.getUserProfile().getFavoriteTeams().remove(team);
         return mapper.toResponseDTO(accountRepository.save(account));
@@ -188,7 +190,7 @@ public class UserService implements IUserService{
 
     public List<TeamResponseDTO> getFavoriteTeams(String email) {
         AccountModel account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
 
         return account.getUserProfile().getFavoriteTeams()
                 .stream()
@@ -199,7 +201,7 @@ public class UserService implements IUserService{
     @Override
     public List<TeamResponseDTO> filterFavoriteTeams(String email, String name, String country) {
         AccountModel account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cuenta no encontrada"));
         return account.getUserProfile().getFavoriteTeams().stream()
                 .filter(team -> name == null || team.getName().toLowerCase().contains(name.toLowerCase()))
                 .filter(team -> country == null || team.getCountry().toLowerCase().contains(country.toLowerCase()))
