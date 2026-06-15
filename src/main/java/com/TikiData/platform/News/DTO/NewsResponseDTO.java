@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class NewsResponseDTO {
     private Long id;
-    private String tirulo;
-    private LocalDate fechaPublicacion;
-    private String mensaje;
+    private String title;
+    private LocalDate publicationDate;
+    private String message;
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface INewsService {
     NewsResponseDTO findById(Long id) throws NewsNotFoundException;
-    List<NewsResponseDTO> findAall();
+    List<NewsResponseDTO> findAll();
     void deleteNew (Long id) throws NewsNotFoundException;
     NewsResponseDTO updateNews (NewsRequestDTO newsRequestDTO, Long id) throws NewsNotFoundException;
     NewsResponseDTO createNews (NewsRequestDTO newsRequestDTO);

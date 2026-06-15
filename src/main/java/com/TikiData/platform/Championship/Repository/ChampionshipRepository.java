@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChampionshipRepository extends JpaRepository<ChampionshipModel, Long> {
-    ChampionshipModel findByChampionshipName(String name);
+    ChampionshipModel findByName(String name);
 }

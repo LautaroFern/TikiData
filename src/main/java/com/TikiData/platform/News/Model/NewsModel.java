@@ -14,11 +14,11 @@ public class NewsModel {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate fechaPublicacion;
+    private LocalDate publicationDate;
 
     @Column(nullable = false)
-    private String titulo;
+    private String title;
 
     @Column(nullable = false)
-    private String mensaje;
+    private String message;
 }

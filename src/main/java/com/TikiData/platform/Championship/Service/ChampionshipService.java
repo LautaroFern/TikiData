@@ -8,6 +8,7 @@ import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
 import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Team.DTO.TeamRequestDTO;
 import com.TikiData.platform.Team.Model.TeamModel;
+import com.TikiData.platform.Team.Repository.TeamRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ChampionshipService implements IChampionshipService {
     private final ChampionshipMapper championshipMapper;
     private final ChampionshipRepository championshipRepository;
+    private final TeamRepository teamRepository;
 
     @Transactional
     @Override
@@ -47,7 +49,7 @@ public class ChampionshipService implements IChampionshipService {
         championship.setCountry(championshipRequestDTO.getCountry());
         championship.setStartDate(championshipRequestDTO.getStartDate());
         championship.setEndDate(championshipRequestDTO.getEndDate());
-        championship.setCantidadEquipos(championshipRequestDTO.getCantidadEquipos());
+        championship.setNumberOfTeams(championshipRequestDTO.getNumberOfTeams());
 
         return championshipMapper.toDTO(championshipRepository.save(championship));
     }
@@ -62,26 +64,22 @@ public class ChampionshipService implements IChampionshipService {
     @Transactional(readOnly = true)
     @Override
     public ChampionshipResponseDTO findByName(String name) {
-        ChampionshipModel championship = championshipRepository.findByChampionshipName(name);
+        ChampionshipModel championship = championshipRepository.findByName(name);
         return championshipMapper.toDTO(championship);
     }
 
     @Transactional
     @Override
-    public ChampionshipResponseDTO addTeamToChampionship(Long id, TeamRequestDTO teamRequestDTO) throws ResourceNotFoundException {
-        ChampionshipModel championship = championshipRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Championship not found"));
+    public ChampionshipResponseDTO addTeamToChampionship(Long championshipId, Long teamId) throws ResourceNotFoundException {
+        ChampionshipModel championship = championshipRepository.findById(championshipId)
+                .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado"));
 
-        TeamModel team = new TeamModel();
-        team.setName(teamRequestDTO.getName());
-        team.setCountry(teamRequestDTO.getCountry());
-        team.setFoundationDate(teamRequestDTO.getFoundationDate());
-        team.setStadium(teamRequestDTO.getStadium());
-        team.setPresident(teamRequestDTO.getPresident());
-        team.setNickname(teamRequestDTO.getNickname());
+        TeamModel team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new ResourceNotFoundException("Equipo no encontrado"));
+
         team.setChampionship(championship);
-
-        championship.getListTeams().add(team);
-        championship.setCantidadEquipos(championship.getCantidadEquipos() + 1);
+        championship.getTeams().add(team);
+        championship.setNumberOfTeams(championship.getNumberOfTeams() + 1);
 
         return championshipMapper.toDTO(championshipRepository.save(championship));
     }
@@ -89,18 +87,17 @@ public class ChampionshipService implements IChampionshipService {
     @Transactional
     @Override
     public void removeTeamFromChampionship(Long idTeam, Long idChampionship) {
-        TeamModel teamModel = new TeamModel();
-        teamModel.setId(idTeam);
+        ChampionshipModel championship = championshipRepository.findById(idChampionship)
+                .orElseThrow(() -> new ResourceNotFoundException("Championship no encontrado"));
 
-        ChampionshipModel championship = championshipRepository.findById(idChampionship).orElseThrow(() -> new ResourceNotFoundException("Championship no encontrado"));
+        boolean removed = championship.getTeams()
+                .removeIf(team -> team.getId().equals(idTeam));
 
-        if (championship.getListTeams().contains(teamModel)) {
-            championship.getListTeams().remove(teamModel);
-            championship.setCantidadEquipos(championship.getCantidadEquipos() - 1);
-            championshipRepository.save(championship);
-        } else {
+        if (!removed) {
             throw new ResourceNotFoundException("El team no forma parte de este campeonato");
         }
 
+        championship.setNumberOfTeams(championship.getNumberOfTeams() - 1);
+        championshipRepository.save(championship);
     }
 }

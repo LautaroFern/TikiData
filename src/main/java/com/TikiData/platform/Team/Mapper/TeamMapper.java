@@ -1,5 +1,6 @@
 package com.TikiData.platform.Team.Mapper;
 
+import com.TikiData.platform.Player.DTO.PlayerResponseDTO;
 import com.TikiData.platform.Team.DTO.TeamRequestDTO;
 import com.TikiData.platform.Team.DTO.TeamResponseDTO;
 import com.TikiData.platform.Team.Model.TeamModel;
@@ -36,6 +37,27 @@ public class TeamMapper {
         teamResponseDTO.setCountry(teamModel.getCountry());
         teamResponseDTO.setPresident(teamModel.getPresident());
         teamResponseDTO.setFoundationDate(teamModel.getFoundationDate());
+
+        if (teamModel.getChampionship() != null){
+            teamResponseDTO.setChampionshipId(teamModel.getChampionship().getId());
+            teamResponseDTO.setChampionshipName(teamModel.getChampionship().getName());
+        }
+
+        if (teamModel.getPlayers() != null) {
+            teamResponseDTO.setPlayers(teamModel.getPlayers().stream()
+                    .map(player -> {
+                        PlayerResponseDTO playerDTO = new PlayerResponseDTO();
+                        playerDTO.setId(player.getId());
+                        playerDTO.setName(player.getName());
+                        playerDTO.setNumber(player.getNumber());
+                        playerDTO.setBornDate(player.getBornDate());
+                        playerDTO.setPosition(player.getPosition());
+                        playerDTO.setTeamId(teamModel.getId());
+                        playerDTO.setTeamName(teamModel.getName());
+                        return playerDTO;
+                    })
+                    .toList());
+        }
         return teamResponseDTO;
     }
 

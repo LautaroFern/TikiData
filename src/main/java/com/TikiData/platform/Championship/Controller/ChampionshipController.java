@@ -48,10 +48,12 @@ public class ChampionshipController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/ascenso/{teamID}")
+    @PutMapping("/ascenso/{championshipID}/team/{teamID}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ChampionshipResponseDTO> addTeamToChampionship(@PathVariable("teamID") Long id, TeamRequestDTO requestDTO){
-        return ResponseEntity.ok(championshipService.addTeamToChampionship(id, requestDTO));
+    public ResponseEntity<ChampionshipResponseDTO> addTeamToChampionship(
+            @PathVariable("championshipID") Long championshipId,
+            @PathVariable("teamID") Long teamId){
+        return ResponseEntity.ok(championshipService.addTeamToChampionship(championshipId, teamId));
     }
 
     @PutMapping("/descenso/{championshipID}/team/{teamID}")

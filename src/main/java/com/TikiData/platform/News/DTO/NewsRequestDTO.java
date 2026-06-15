@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class NewsRequestDTO {
     @NotBlank(message = "El titulo es obligatorio")
-    private String titulo;
+    private String title;
 
     @NotBlank(message = "El mensaje es obligatorio")
-    private String mensaje;
+    private String message;
 }

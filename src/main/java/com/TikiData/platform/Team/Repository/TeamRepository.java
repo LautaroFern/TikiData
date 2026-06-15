@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TeamRepository extends JpaRepository<TeamModel, Long> {
-    TeamModel findByTeamName(String name);
+    TeamModel findByName(String name);
 
     @Query("SELECT t FROM TeamModel t WHERE " +
             "(:name IS NULL OR LOWER(t.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +

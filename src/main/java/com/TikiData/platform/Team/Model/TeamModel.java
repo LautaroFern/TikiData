@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,5 +46,6 @@ public class TeamModel {
     private ChampionshipModel championship;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PlayerModel> players;
+    @Builder.Default
+    private List<PlayerModel> players = new ArrayList<>();
 }

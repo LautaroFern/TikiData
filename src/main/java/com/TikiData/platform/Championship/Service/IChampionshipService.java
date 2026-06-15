@@ -19,7 +19,7 @@ public interface IChampionshipService {
 
     ChampionshipResponseDTO findByName(String name);
 
-    ChampionshipResponseDTO addTeamToChampionship(Long id, TeamRequestDTO teamRequestDTO);
+    ChampionshipResponseDTO addTeamToChampionship(Long championshipId, Long teamId);
 
     void removeTeamFromChampionship(Long idTeam, Long idChampionship);
 }

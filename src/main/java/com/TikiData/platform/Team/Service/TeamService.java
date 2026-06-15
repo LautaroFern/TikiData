@@ -1,6 +1,6 @@
 package com.TikiData.platform.Team.Service;
 
-import com.TikiData.platform.Championship.Model.Championship;
+import com.TikiData.platform.Championship.Model.ChampionshipModel;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
 import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Common.Exception.TeamNotFoundException;
@@ -37,13 +37,13 @@ public class TeamService implements ITeamService {
 
     @Override
     public TeamResponseDTO findTeamByName(String name) {
-        TeamModel teamModel = teamRepository.findByTeamName(name);
+        TeamModel teamModel = teamRepository.findByName(name);
         return teamMapper.toDTO(teamModel);
     }
 
     @Transactional
     public TeamResponseDTO saveTeam(TeamRequestDTO teamRequestDTO) {
-        Championship championship = championshipRepository.findById(teamRequestDTO.getChampionshipId())
+        ChampionshipModel championship = championshipRepository.findById(teamRequestDTO.getChampionshipId())
                 .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado con el ID: " + teamRequestDTO.getChampionshipId()));
 
         TeamModel teamModel = teamMapper.toEntity(teamRequestDTO);
@@ -57,7 +57,7 @@ public class TeamService implements ITeamService {
                 () -> new ResourceNotFoundException("Equipo no encontrado con el ID: " + id)
         );
 
-        Championship championship = championshipRepository.findById(teamRequestDTO.getChampionshipId())
+        ChampionshipModel championship = championshipRepository.findById(teamRequestDTO.getChampionshipId())
                 .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado con el ID: " + teamRequestDTO.getChampionshipId()));
 
         teamMapper.updateTeamFromDTO(teamRequestDTO, teamModel);

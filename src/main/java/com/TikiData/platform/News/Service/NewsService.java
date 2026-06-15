@@ -25,7 +25,7 @@ public class NewsService implements INewsService {
     }
 
     @Override
-    public List<NewsResponseDTO> findAall() {
+    public List<NewsResponseDTO> findAll() {
         return newsRepository.findAll()
                 .stream()
                 .map(newsMapper::toDTO)
@@ -41,9 +41,9 @@ public class NewsService implements INewsService {
     @Override
     public NewsResponseDTO updateNews(NewsRequestDTO newsRequestDTO, Long id) throws NewsNotFoundException {
         NewsModel newsModel = newsRepository.findById(id).orElseThrow(() -> new NewsNotFoundException("Noticia no encontrada"));
-        newsModel.setMensaje(newsRequestDTO.getMensaje());
-        newsModel.setTitulo(newsRequestDTO.getTitulo());
-        newsModel.setFechaPublicacion(LocalDate.now());
+        newsModel.setMessage(newsRequestDTO.getMessage());
+        newsModel.setTitle(newsRequestDTO.getTitle());
+        newsModel.setPublicationDate(LocalDate.now());
         return newsMapper.toDTO(newsRepository.save(newsModel));
     }
 

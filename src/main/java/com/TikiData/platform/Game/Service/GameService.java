@@ -1,6 +1,6 @@
 package com.TikiData.platform.Game.Service;
 
-import com.TikiData.platform.Championship.Model.Championship;
+import com.TikiData.platform.Championship.Model.ChampionshipModel;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
 import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Game.DTO.GameEventRequestDTO;
@@ -40,7 +40,7 @@ public class GameService implements IGameService {
     @Transactional
     @Override
     public GameResponseDTO saveGame(GameRequestDTO dto) {
-        Championship championship = championshipRepository.findById(dto.getChampionshipId())
+        ChampionshipModel championship = championshipRepository.findById(dto.getChampionshipId())
                 .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado con el ID: " + dto.getChampionshipId()));
 
         TeamModel homeTeam = teamRepository.findById(dto.getHomeTeamId())
