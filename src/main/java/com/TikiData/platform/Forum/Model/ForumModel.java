@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,5 +38,6 @@ public class ForumModel {
     private UserModel creator;
 
     @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CommentModel> comments;
+    @Builder.Default
+    private List<CommentModel> comments = new ArrayList<>();
 }

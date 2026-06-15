@@ -11,6 +11,7 @@ public interface ITeamService {
     TeamResponseDTO findTeamByName(String name);
     TeamResponseDTO saveTeam(TeamRequestDTO teamRequestDTO);
     TeamResponseDTO updateTeam(Long id, TeamRequestDTO teamRequestDTO);
-    void deleteTeam(Long id);    List<TeamResponseDTO> filterTeams(String name, String country);
+    void deleteTeam(Long id);
+    List<TeamResponseDTO> filterTeams(String name, String country);
     List<PlayerResponseDTO> listPlayers(String name);
 }

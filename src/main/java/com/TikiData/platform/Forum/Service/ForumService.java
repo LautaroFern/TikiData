@@ -12,6 +12,7 @@ import com.TikiData.platform.Forum.Model.ForumModel;
 import com.TikiData.platform.Forum.Repository.ICommentRepository;
 import com.TikiData.platform.Forum.Repository.IForumRepository;
 import com.TikiData.platform.User.Model.UserModel;
+import com.TikiData.platform.User.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,16 @@ public class ForumService implements IForumService {
     private final IForumRepository forumRepository;
     private final ICommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final UserRepository userRepository;
 
     @Override
     public ForumResponseDTO createForum(ForumRequestDTO forumRequestDTO) {
+        UserModel creator = userRepository.findById(forumRequestDTO.getCreatorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
         ForumModel forumModel = forumMapper.toEntity(forumRequestDTO);
+        forumModel.setCreator(creator);
+
         return forumMapper.toResponse(forumRepository.save(forumModel));
     }
 
@@ -40,21 +47,22 @@ public class ForumService implements IForumService {
 
     @Override
     public ForumResponseDTO searchByName(String name) {
-        ForumModel forumModel = forumRepository.findByName(name);
+        ForumModel forumModel = forumRepository.findByTitle(name);
         return forumMapper.toResponse(forumModel);
     }
 
     @Override
     public ForumResponseDTO addComment(CommentRequestDTO commentRequestDTO) {
-        ForumModel forumModel = forumRepository.findById(commentRequestDTO.getForumId()).orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
+        ForumModel forumModel = forumRepository.findById(commentRequestDTO.getForumId())
+                .orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
 
         CommentModel commentModel = new CommentModel();
         commentModel.setContent(commentRequestDTO.getContent());
         commentModel.setCreatedAt(LocalDateTime.now());
         commentModel.setForum(forumModel);
 
-        UserModel user = new UserModel();
-        user.setId(commentRequestDTO.getAuthorId());
+        UserModel user = userRepository.findById(commentRequestDTO.getAuthorId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         commentModel.setAuthor(user);
 
         forumModel.getComments().add(commentModel);
@@ -63,9 +71,9 @@ public class ForumService implements IForumService {
 
     @Override
     public void deleteComment(Long id) {
-        CommentModel commentModel = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comentario no encontrado"));
-        ForumModel forumModel = forumRepository.findById(commentModel.getForum().getId()).orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
-        forumModel.getComments().remove(commentModel);
+        CommentModel commentModel = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comentario no encontrado"));
+        commentRepository.delete(commentModel);
     }
 
     @Override

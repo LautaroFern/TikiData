@@ -19,18 +19,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    @ExceptionHandler(PlayerNotFoundException.class)
-    public ResponseEntity<ErrorMessage> handlerForPlayerNotFoundException(PlayerNotFoundException ex) {
-        ErrorMessage error = new ErrorMessage(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(TeamNotFoundException.class)
-    public ResponseEntity<ErrorMessage> handlerForTeamNotFoundException(TeamNotFoundException ex) {
-        ErrorMessage error = new ErrorMessage(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<ErrorMessage> handlerForResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
         ErrorMessage error = new ErrorMessage(ex.getMessage());
@@ -41,6 +29,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessage> handlerForResourceNotFoundException(ResourceNotFoundException ex) {
         ErrorMessage error = new ErrorMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(InvalidParamException.class)
+    public ResponseEntity<ErrorMessage> handlerForInvalidParamException(InvalidParamException ex) {
+        ErrorMessage error = new ErrorMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
