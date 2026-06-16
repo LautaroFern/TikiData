@@ -47,7 +47,7 @@ public class ForumService implements IForumService {
 
     @Override
     public ForumResponseDTO searchByName(String name) {
-        ForumModel forumModel = forumRepository.findByTitle(name);
+        ForumModel forumModel = forumRepository.findByTitle(name).orElseThrow(() -> new ResourceNotFoundException("Foro no encontrado"));
         return forumMapper.toResponse(forumModel);
     }
 

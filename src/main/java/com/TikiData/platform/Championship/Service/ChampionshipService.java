@@ -6,7 +6,6 @@ import com.TikiData.platform.Championship.Mapper.ChampionshipMapper;
 import com.TikiData.platform.Championship.Model.ChampionshipModel;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
 import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
-import com.TikiData.platform.Team.DTO.TeamRequestDTO;
 import com.TikiData.platform.Team.Model.TeamModel;
 import com.TikiData.platform.Team.Repository.TeamRepository;
 import lombok.AllArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -64,7 +64,7 @@ public class ChampionshipService implements IChampionshipService {
     @Transactional(readOnly = true)
     @Override
     public ChampionshipResponseDTO findByName(String name) {
-        ChampionshipModel championship = championshipRepository.findByName(name);
+        ChampionshipModel championship = championshipRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Championship no encontrado"));
         return championshipMapper.toDTO(championship);
     }
 

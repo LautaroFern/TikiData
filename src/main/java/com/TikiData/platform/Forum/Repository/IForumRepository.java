@@ -4,7 +4,9 @@ import com.TikiData.platform.Forum.Model.ForumModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface IForumRepository extends JpaRepository<ForumModel, Long> {
-    ForumModel findByTitle (String title);
+    Optional<ForumModel> findByTitle (String title);
 }

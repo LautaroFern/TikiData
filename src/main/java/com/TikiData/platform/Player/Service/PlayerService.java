@@ -38,7 +38,7 @@ public class PlayerService implements IPlayerService {
 
     @Override
     public PlayerResponseDTO findByName(String name) {
-        PlayerModel playerModel = playerRepository.findByName(name);
+        PlayerModel playerModel = playerRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Jugador no encontrado"));
         if (playerModel == null){
             throw new ResourceNotFoundException("Jugador no encontrado con el nombre: " + name);
         }

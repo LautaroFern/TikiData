@@ -1,6 +1,7 @@
 package com.TikiData.platform.News.Service;
 
 import com.TikiData.platform.Common.Exception.NewsNotFoundException;
+import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.News.DTO.NewsRequestDTO;
 import com.TikiData.platform.News.DTO.NewsResponseDTO;
 import com.TikiData.platform.News.Mapper.NewsMapper;
@@ -55,7 +56,7 @@ public class NewsService implements INewsService {
 
     @Override
     public NewsResponseDTO findByTitle(String title) throws NewsNotFoundException{
-        NewsModel newsModel = newsRepository.findByTitle(title);
+        NewsModel newsModel = newsRepository.findByTitle(title).orElseThrow(() -> new ResourceNotFoundException("Noticia no encontrada"));
         if (newsModel == null){
             throw new NewsNotFoundException("Noticia no encontrada");
         }
