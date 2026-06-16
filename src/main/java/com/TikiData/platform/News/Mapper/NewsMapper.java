@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class NewsMapper {
     public NewsModel toEntity(NewsRequestDTO newsRequestDTO){
         NewsModel newsModel = new NewsModel();
-        newsModel.setTitle(newsModel.getTitle());
+        newsModel.setTitle(newsRequestDTO.getTitle());
         newsModel.setMessage(newsRequestDTO.getMessage());
         newsModel.setPublicationDate(LocalDate.now());
         return newsModel;
@@ -19,10 +19,10 @@ public class NewsMapper {
 
     public NewsResponseDTO toDTO(NewsModel newsModel){
         NewsResponseDTO newsResponseDTO = new NewsResponseDTO();
-        newsResponseDTO.setId(newsResponseDTO.getId());
-        newsResponseDTO.setTitle((newsResponseDTO.getTitle()));
+        newsResponseDTO.setId(newsModel.getId());
+        newsResponseDTO.setTitle((newsModel.getTitle()));
         newsResponseDTO.setPublicationDate(newsModel.getPublicationDate());
-        newsResponseDTO.setMessage(newsResponseDTO.getMessage());
+        newsResponseDTO.setMessage(newsModel.getMessage());
         return newsResponseDTO;
     }
 }

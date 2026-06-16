@@ -34,7 +34,7 @@ public class GameEventModel {
     private PlayerModel player;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "secondary_player_id", nullable = true)
+    @JoinColumn(name = "secondary_player_id")
     private PlayerModel secondaryPlayer;
 
 }

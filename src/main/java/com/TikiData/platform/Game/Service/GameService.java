@@ -2,6 +2,7 @@ package com.TikiData.platform.Game.Service;
 
 import com.TikiData.platform.Championship.Model.ChampionshipModel;
 import com.TikiData.platform.Championship.Repository.ChampionshipRepository;
+import com.TikiData.platform.Common.Exception.InvalidParamException;
 import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Game.DTO.GameEventRequestDTO;
 import com.TikiData.platform.Game.DTO.GameEventResponseDTO;
@@ -40,6 +41,10 @@ public class GameService implements IGameService {
     @Transactional
     @Override
     public GameResponseDTO saveGame(GameRequestDTO dto) {
+        if (dto.getHomeTeamId().equals(dto.getAwayTeamId())) {
+            throw new InvalidParamException("Un equipo no puede jugar contra sí mismo");
+        }
+
         ChampionshipModel championship = championshipRepository.findById(dto.getChampionshipId())
                 .orElseThrow(() -> new ResourceNotFoundException("Campeonato no encontrado con el ID: " + dto.getChampionshipId()));
 
@@ -48,6 +53,14 @@ public class GameService implements IGameService {
 
         TeamModel awayTeam = teamRepository.findById(dto.getAwayTeamId())
                 .orElseThrow(() -> new ResourceNotFoundException("Equipo visitante no encontrado con el ID: " + dto.getAwayTeamId()));
+
+        if (homeTeam.getChampionship() == null || !homeTeam.getChampionship().getId().equals(championship.getId())) {
+            throw new InvalidParamException("El equipo local no pertenece a este campeonato");
+        }
+
+        if (awayTeam.getChampionship() == null || !awayTeam.getChampionship().getId().equals(championship.getId())) {
+            throw new InvalidParamException("El equipo visitante no pertenece a este campeonato");
+        }
 
         GameModel game = gameMapper.toEntity(dto);
         game.setChampionship(championship);
@@ -62,6 +75,24 @@ public class GameService implements IGameService {
     @Override
     public List<GameResponseDTO> findAllGames() {
         return gameRepository.findAll().stream()
+                .map(gameMapper::toDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<GameResponseDTO> findByChampionship(Long championshipId){
+        return gameRepository.findByChampionshipId(championshipId)
+                .stream()
+                .map(gameMapper::toDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<GameResponseDTO> findByTeam(Long teamId){
+        return gameRepository.findByHomeTeamIdOrAwayTeamId(teamId, teamId)
+                .stream()
                 .map(gameMapper::toDTO)
                 .toList();
     }

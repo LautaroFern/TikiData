@@ -17,14 +17,6 @@ public class PlayerMapper {
         playerModel.setBornDate(playerRequestDTO.getBornDate());
         playerModel.setPosition(playerRequestDTO.getPosition());
 
-
-        if (playerRequestDTO.getTeamId() != null) {
-            TeamModel team = new TeamModel();
-            team.setId(playerRequestDTO.getTeamId());
-            playerModel.setTeam(team);
-        }
-
-        // SOLUCIÓN AL ERROR 2: Devolvemos el objeto
         return playerModel;
     }
 

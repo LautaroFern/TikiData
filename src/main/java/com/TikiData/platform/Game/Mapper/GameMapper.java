@@ -51,12 +51,11 @@ public class GameMapper {
             dto.setAwayTeamId(game.getAwayTeam().getId());
             dto.setAwayTeamName(game.getAwayTeam().getName());
         }
-        if (game.getEvents() != null && !game.getEvents().isEmpty()) {
-            List<GameEventResponseDTO> eventDTOs = game.getEvents().stream()
-                    .map(gameEventMapper::toDTO)
-                    .toList();
-            dto.setEvents(eventDTOs);
-        }
+        dto.setEvents(game.getEvents() != null
+                ? game.getEvents().stream()
+                .map(gameEventMapper::toDTO)
+                .toList()
+                : List.of());
 
         return dto;
     }

@@ -27,6 +27,18 @@ public class GameController {
         return ResponseEntity.ok(gameService.findAllGames());
     }
 
+    @GetMapping("/championship/{championshipId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<List<GameResponseDTO>> getByChampionship(@PathVariable Long championshipId) {
+        return ResponseEntity.ok(gameService.findByChampionship(championshipId));
+    }
+
+    @GetMapping("/team/{teamId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<List<GameResponseDTO>> getByTeam(@PathVariable Long teamId) {
+        return ResponseEntity.ok(gameService.findByTeam(teamId));
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<GameResponseDTO> getGameById(@PathVariable Long id) {

@@ -1,6 +1,5 @@
 package com.TikiData.platform.Player.Service;
 
-import com.TikiData.platform.Common.Exception.PlayerNotFoundException;
 import com.TikiData.platform.Common.Exception.ResourceNotFoundException;
 import com.TikiData.platform.Common.Exception.TeamNotFoundException;
 import com.TikiData.platform.Player.DTO.PlayerRequestDTO;
@@ -50,6 +49,13 @@ public class PlayerService implements IPlayerService {
     @Transactional
     public PlayerResponseDTO savePlayer(PlayerRequestDTO playerRequestDTO) {
         PlayerModel playerModel = playerMapper.toEntity(playerRequestDTO);
+
+        if (playerRequestDTO.getTeamId() != null) {
+            TeamModel team = teamRepository.findById(playerRequestDTO.getTeamId())
+                    .orElseThrow(() -> new TeamNotFoundException("Equipo no encontrado"));
+            playerModel.setTeam(team);
+        }
+
         return playerMapper.toDTO(playerRepository.save(playerModel));
     }
 

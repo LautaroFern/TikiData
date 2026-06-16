@@ -22,8 +22,6 @@ public class CommentRequestDTO {
     @Positive(message = "El ID del autor debe ser un número positivo")
     private Long authorId;
 
-    @NotNull(message = "El ID del foro es obligatorio")
-    @Positive(message = "El ID del foro debe ser un número positivo")
     private Long forumId;
 
 }

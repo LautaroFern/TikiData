@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface IGameService {
     GameResponseDTO saveGame(GameRequestDTO dto);
+    List<GameResponseDTO> findByChampionship(Long championshipId);
+    List<GameResponseDTO> findByTeam(Long teamId);
     List<GameResponseDTO> findAllGames();
     GameResponseDTO findGameById(Long id);
     GameResponseDTO updateGameStatus(Long id, String status, Integer homeGoals, Integer awayGoals);
