@@ -27,7 +27,7 @@ public class AccountModel {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "role_type")
     private Role role;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)

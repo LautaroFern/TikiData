@@ -27,7 +27,7 @@ public class PlayerController {
         return ResponseEntity.ok(playerService.findById(id));
     }
 
-    @GetMapping("/name/{name]")
+    @GetMapping("/name/{name}")
     public ResponseEntity<PlayerResponseDTO> findByName(@PathVariable("name") String name) {
         return ResponseEntity.ok(playerService.findByName(name));
     }

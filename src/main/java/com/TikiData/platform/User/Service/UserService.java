@@ -42,6 +42,7 @@ public class UserService implements IUserService{
         UserModel newProfile = mapper.toProfileEntity(requestDTO);
 
         newAccount.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
+        newAccount.setRole(Role.USER);
 
         newProfile.setAccount(newAccount);
         newAccount.setUserProfile(newProfile);
@@ -62,6 +63,7 @@ public class UserService implements IUserService{
         UserModel newProfile = mapper.toProfileEntity(adminDTO);
 
         newAccount.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
+        newAccount.setRole(Role.ADMIN);
 
         newProfile.setAccount(newAccount);
         newAccount.setUserProfile(newProfile);

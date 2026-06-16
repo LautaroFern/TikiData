@@ -28,15 +28,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http
+                // 1. DESACTIVAR CSRF COMPLETAMENTE
+                .csrf(csrf -> csrf.disable())
+
+                // 2. OBLIGATORIO PARA H2: Desactivar las cabeceras de FrameOptions para que el navegador pueda renderizar la consola
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
+                // 3. CONFIGURAR RUTAS PÚBLICAS
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll() // <-- Consola de H2 liberada
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
+
+                // 4. SESIÓN STATELESS PARA JWT
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // 5. FILTRO JWT
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -18,7 +18,7 @@ public class GameEventModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "event_minute")
     private Integer minute;
 
     @Enumerated(EnumType.STRING)
