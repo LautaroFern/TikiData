@@ -1,5 +1,6 @@
 package com.TikiData.platform.Game.DTO;
 
+import com.TikiData.platform.Game.Model.Round;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,11 +20,15 @@ public class GameResponseDTO {
     private String status;
     private Integer homeGoals;
     private Integer awayGoals;
+    private Integer homePenalties;
+    private Integer awayPenalties;
     private Long championshipId;
     private String championshipName;
     private Long homeTeamId;
     private String homeTeamName;
     private Long awayTeamId;
     private String awayTeamName;
+    private Round round;
+    private String tieId;
     private List<GameEventResponseDTO> events;
 }

@@ -58,9 +58,11 @@ public class GameController {
             @PathVariable Long id,
             @RequestParam String status,
             @RequestParam(required = false) Integer homeGoals,
-            @RequestParam(required = false) Integer awayGoals) {
+            @RequestParam(required = false) Integer awayGoals,
+            @RequestParam(required = false) Integer homePenalties,
+            @RequestParam(required = false) Integer awayPenalties) {
 
-        GameResponseDTO response = gameService.updateGameStatus(id, status, homeGoals, awayGoals);
+        GameResponseDTO response = gameService.updateGameStatus(id, status, homeGoals, awayGoals, homePenalties, awayPenalties);
         return ResponseEntity.ok(response);
     }
 

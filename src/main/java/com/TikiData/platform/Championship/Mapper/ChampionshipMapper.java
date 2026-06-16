@@ -21,6 +21,7 @@ public class ChampionshipMapper {
         championship.setStartDate(championshipRequestDTO.getStartDate());
         championship.setEndDate(championshipRequestDTO.getEndDate());
         championship.setSeason(championshipRequestDTO.getSeason());
+        championship.setFormat(championshipRequestDTO.getFormat());
         return championship;
     }
 
@@ -33,6 +34,7 @@ public class ChampionshipMapper {
         dto.setStartDate(championship.getStartDate());
         dto.setEndDate(championship.getEndDate());
         dto.setSeason(championship.getSeason());
+        dto.setFormat(championship.getFormat());
         dto.setTeams(championship.getTeams() != null
                 ? championship.getTeams().stream()
                 .map(teamMapper::toDTO)

@@ -1,5 +1,6 @@
 package com.TikiData.platform.Championship.DTO;
 
+import com.TikiData.platform.Championship.Model.TournamentFormat;
 import com.TikiData.platform.Common.Validation.EvenNumber;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +19,9 @@ public class ChampionshipRequestDTO {
     @NotBlank(message = "El país es obligatorio")
     @Size(min = 2, max = 100, message = "El país debe tener entre 2 y 100 caracteres")
     private String country;
+
+    @NotNull(message = "El formato del torneo es obligatorio")
+    private TournamentFormat format;
 
     @NotNull(message = "La cantidad de equipos es obligatoria")
     @Min(value = 2, message = "Debe haber al menos 2 equipos")

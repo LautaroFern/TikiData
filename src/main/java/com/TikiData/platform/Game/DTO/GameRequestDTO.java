@@ -1,5 +1,6 @@
 package com.TikiData.platform.Game.DTO;
 
+import com.TikiData.platform.Game.Model.Round;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,4 +31,9 @@ public class GameRequestDTO {
 
     @NotNull(message = "El ID del equipo visitante es obligatorio")
     private Long awayTeamId;
+
+    private Integer homePenalties;
+    private Integer awayPenalties;
+    private Round round;
+    private String tieId;
 }

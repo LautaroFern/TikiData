@@ -40,6 +40,18 @@ public class GameModel {
     @Column(name = "away_goals")
     private Integer awayGoals;
 
+    @Column(name = "home_penalties")
+    private Integer homePenalties;
+
+    @Column(name = "away_penalties")
+    private Integer awayPenalties;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "round_type")
+    private Round round;
+
+    @Column(name = "tie_id")
+    private String tieId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "championship_id", nullable = false)

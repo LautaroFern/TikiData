@@ -25,6 +25,10 @@ public class GameMapper {
         game.setStatus(GameStatus.SCHEDULED);
         game.setHomeGoals(null);
         game.setAwayGoals(null);
+        game.setHomePenalties(dto.getHomePenalties());
+        game.setAwayPenalties(dto.getAwayPenalties());
+        game.setRound(dto.getRound());
+        game.setTieId(dto.getTieId());
 
         return game;
     }
@@ -37,6 +41,10 @@ public class GameMapper {
         dto.setStatus(game.getStatus().name());
         dto.setHomeGoals(game.getHomeGoals());
         dto.setAwayGoals(game.getAwayGoals());
+        dto.setHomePenalties(game.getHomePenalties());
+        dto.setAwayPenalties(game.getAwayPenalties());
+        dto.setRound(game.getRound());
+        dto.setTieId(game.getTieId());
 
         if (game.getChampionship() != null) {
             dto.setChampionshipId(game.getChampionship().getId());

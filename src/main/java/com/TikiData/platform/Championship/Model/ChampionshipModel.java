@@ -31,6 +31,10 @@ public class ChampionshipModel {
     @Column(nullable = false)
     private Integer numberOfTeams;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TournamentFormat format;
+
     @OneToMany(mappedBy = "championship", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<TeamModel> teams = new ArrayList<>();

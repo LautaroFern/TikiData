@@ -107,13 +107,15 @@ public class GameService implements IGameService {
 
     @Transactional
     @Override
-    public GameResponseDTO updateGameStatus(Long id, String status, Integer homeGoals, Integer awayGoals) {
+    public GameResponseDTO updateGameStatus(Long id, String status, Integer homeGoals, Integer awayGoals, Integer homePenalties, Integer awayPenalties) {
         GameModel game = gameRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Partido no encontrado con el ID: " + id));
 
         game.setStatus(GameStatus.valueOf(status.toUpperCase()));
         game.setHomeGoals(homeGoals);
         game.setAwayGoals(awayGoals);
+        game.setHomePenalties(homePenalties);
+        game.setAwayPenalties(awayPenalties);
 
         return gameMapper.toDTO(gameRepository.save(game));
     }
