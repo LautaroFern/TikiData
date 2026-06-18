@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class NewsController {
     private final NewsService newsService;
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<NewsResponseDTO> createNews (@RequestBody @Valid NewsRequestDTO newsRequestDTO){
         NewsResponseDTO newsResponseDTO = newsService.createNews(newsRequestDTO);
         return new ResponseEntity<>(newsResponseDTO,HttpStatus.CREATED);
@@ -33,6 +35,7 @@ public class NewsController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<NewsResponseDTO> updateNews(@RequestBody NewsRequestDTO dto, @PathVariable Long id) {
         try {
             NewsResponseDTO updated = newsService.updateNews(dto, id);
@@ -52,6 +55,7 @@ public class NewsController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<NewsResponseDTO> findByID(@PathVariable Long id){
         try {
             return new ResponseEntity<>(newsService.findById(id), HttpStatus.OK);
@@ -61,6 +65,7 @@ public class NewsController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteNews(@PathVariable Long id) {
         try {
             newsService.deleteNew(id);

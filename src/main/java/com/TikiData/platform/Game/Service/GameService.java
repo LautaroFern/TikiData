@@ -70,7 +70,6 @@ public class GameService implements IGameService {
         return gameMapper.toDTO(gameRepository.save(game));
     }
 
-
     @Transactional(readOnly = true)
     @Override
     public List<GameResponseDTO> findAllGames() {
