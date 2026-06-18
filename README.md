@@ -33,8 +33,12 @@ src/
 │       ├── Team/
 │       ├── Championship/
 │       ├── News/
-│       ├── Community/
+│       ├── Forum/
 │       ├── Game/
+│       ├── MiniGame/
+│       ├── Standing/
+│       ├── Account/
+│       ├── User/
 │       └── Common/
 │           ├── Config/
 │           └── Exception/
@@ -53,7 +57,7 @@ Rol orientado al consumo de datos, personalización y participación. Puede:
 - Participar en foros de discusión
 - Interactuar con minijuegos
 
-###  Administrador
+### ️ Administrador
 Rol orientado a la gestión y mantenimiento del sistema. Puede:
 - Realizar altas, bajas y modificaciones (ABM) de usuarios
 - Gestionar equipos, campeonatos y noticias
@@ -79,11 +83,13 @@ El sistema implementa autenticación y autorización mediante **Spring Security*
 - **Equipo (Team)** — nombre, escudo, país, jugadores
 - **Campeonato (Championship)** — nombre, temporada, equipos participantes
 - **Noticia (News)** — título, contenido, fecha de publicación
-- **Comunidad (Community)** — foros de discusión entre usuarios
+- **Foro (Forum)** — foros de discusión entre usuarios
+- **MiniGame** — redirección mediante enlace externo a una página de juegos interactivos para los aficionados
+- **Standing** — sistema de puntos y tabla de posiciones de los equipos en cada campeonato
 
 ---
 
-##  Cómo ejecutar el proyecto
+## ️ Cómo ejecutar el proyecto
 
 ### Requisitos previos
 - Java 21 o superior
@@ -140,7 +146,14 @@ http://localhost:8080/h2-console
 | PUT | `/api/teams/{id}` | Actualizar equipo | ADMIN |
 | DELETE | `/api/teams/{id}` | Eliminar equipo | ADMIN |
 
-### Campeonatos
+### Foros
+| Método | Endpoint | Descripción | Rol requerido |
+|---|---|---|---|
+| GET | `/api/forums` | Listar todos los foros | USER, ADMIN |
+| GET | `/api/forums/{id}` | Obtener foro por ID | USER, ADMIN |
+| POST | `/api/forums` | Crear foro | USER, ADMIN |
+| PUT | `/api/forums/{id}` | Actualizar foro | ADMIN |
+| DELETE | `/api/forums/{id}` | Eliminar foro | ADMIN |
 | Método | Endpoint | Descripción | Rol requerido |
 |---|---|---|---|
 | GET | `/api/championships` | Listar campeonatos | USER, ADMIN |
@@ -156,6 +169,23 @@ http://localhost:8080/h2-console
 | POST | `/api/news` | Crear noticia | ADMIN |
 | PUT | `/api/news/{id}` | Actualizar noticia | ADMIN |
 | DELETE | `/api/news/{id}` | Eliminar noticia | ADMIN |
+
+### Minijuegos
+| Método | Endpoint | Descripción | Rol requerido |
+|---|---|---|---|
+| GET | `/api/minigames` | Listar minijuegos con enlaces | USER, ADMIN |
+| GET | `/api/minigames/{id}` | Obtener enlace de un minijuego | USER, ADMIN |
+| POST | `/api/minigames` | Agregar minijuego | ADMIN |
+| DELETE | `/api/minigames/{id}` | Eliminar minijuego | ADMIN |
+
+### Tabla de posiciones
+| Método | Endpoint | Descripción | Rol requerido |
+|---|---|---|---|
+| GET | `/api/standings` | Listar tabla de posiciones | USER, ADMIN |
+| GET | `/api/standings/{id}` | Obtener posición por ID | USER, ADMIN |
+| POST | `/api/standings` | Crear registro de posición | ADMIN |
+| PUT | `/api/standings/{id}` | Actualizar puntos y posición | ADMIN |
+| DELETE | `/api/standings/{id}` | Eliminar registro | ADMIN |
 
 ---
 
